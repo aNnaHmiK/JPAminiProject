@@ -1,11 +1,13 @@
 package model.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,13 +18,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@NamedQuery(query = "select c from Clinic c", name = "Clinic.findAll")
+@NamedQuery(query = "select c from Clinic c where c.sign=:sign", name = "Clinic.findBysign")
 @Entity
 public class Clinic {
 
-	@Id
 	@Column(name = "clinic_id")
 	private String cID;
 
+	@Id
 	private String sign;
 
 	private String general;
@@ -30,15 +34,14 @@ public class Clinic {
 	private String test;
 
 	private String surgery;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "desk_id")
-	private Desk dID;
+
+//	@OneToMany(mappedBy = "clinic")
+//    private List<Desk> desks = new ArrayList<>();
 
 	@Override
 	public String toString() {
-		return "Clinic [cID=" + cID + ", sign=" + sign + ", general=" + general + ", test=" + test + ", surgery="
-				+ surgery + "]";
+		return "Clinic [cID=" + cID + ", sign=" + sign + ", general=" + general 
+				+ ", test=" + test + ", surgery=" + surgery + "]";
 	}
 
 }

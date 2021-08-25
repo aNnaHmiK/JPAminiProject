@@ -1,34 +1,47 @@
 package model.dao;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import org.junit.jupiter.api.Test;
 
+import model.domain.Desk;
 import model.domain.Patient;
 import util.PublicCommon;
 
 public class PatientDAO {
 
 	// 1. 환자 등록
-//	@Test
+	@Test
 	void pInit() {
 
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 
 		tx.begin();
-
+		
+		long time = System.currentTimeMillis();
+		SimpleDateFormat simple = new SimpleDateFormat("yyyy년 MM월 dd일 aa hh시 mm분 ss초");
+		String t = simple.format(time);
+		
 		try {
+			Desk desk = new Desk();
+			desk.setDName("내과");
+			desk.setDate(t);
+			
 			Patient p1 = new Patient();
 			p1.setName("이건우");
 			p1.setGender("M");
 			p1.setAge("5Y");
 			p1.setBirth("17.06.12");
 			p1.setPhone("010-111-1111");
+			p1.getDesks().add(desk);
+			
+			//p1 에서 AarryList 받아서 add( set)
 
+			
 			Patient p2 = new Patient();
 			p2.setName("마슈슈");
 			p2.setGender("F");
@@ -104,7 +117,8 @@ public class PatientDAO {
 			em.find(Patient.class, 1).setPhone("010-777-7777");
 
 			tx.commit();
-
+			
+			System.out.println("■ ■ ■ 수정 성공 ■ ■ ■");
 			System.out.println(em.find(Patient.class, 1));
 
 		} catch (Exception e) {
@@ -128,8 +142,12 @@ public class PatientDAO {
 			em.remove(em.find(Patient.class, 1));
 
 			tx.commit();
-
-			System.out.println(em.find(Patient.class, 1));
+			
+			if(em.find(Patient.class, 1) == null) {
+				System.out.println("■ ■ ■ 해당 환자는 없습니다 ■ ■ ■");
+			}else {
+				System.out.println(em.find(Patient.class, 1));
+			}
 
 		} catch (Exception e) {
 			tx.rollback();
@@ -138,11 +156,10 @@ public class PatientDAO {
 			em.close();
 			em = null;
 		}
-
 	}
 
 	// 4. 전체 환자 검색
-	@Test
+//	@Test
 	void pSelectAll() {
 
 		EntityManager em = PublicCommon.getEntityManager();
@@ -151,11 +168,10 @@ public class PatientDAO {
 		tx.begin();
 
 		try {
-			String jpql = "select p from Patient p ";
-
-			List<Patient> all = em.createQuery(jpql).getResultList();
-
-			all.forEach(v -> System.out.println(v));
+			System.out.println(em.createNamedQuery("Patient.findAll"));
+//			List<Patient> all = em.createNamedQuery("Patient.findAll").getResultList();
+//
+//			all.forEach(v -> System.out.println(v));
 
 			tx.commit();
 
@@ -170,7 +186,7 @@ public class PatientDAO {
 
 	// 5. 특정 환자 검색
 //	@Test
-	void pSelect() {
+	void pSelectOne() {
 
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -178,7 +194,7 @@ public class PatientDAO {
 		tx.begin();
 
 		try {
-			Patient p = em.find(Patient.class, 1);
+			Patient p = (Patient)em.createNamedQuery("Patient.findByname").setParameter("name", "마슈슈").getSingleResult();
 
 			System.out.println("■ 이름: " + p.getName());
 			System.out.println("■ 성별: " + p.getGender());

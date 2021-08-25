@@ -1,6 +1,6 @@
 package model.dao;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -20,30 +20,33 @@ public class DeskDAO {
 
 		tx.begin();
 
+		long time = System.currentTimeMillis();
+		SimpleDateFormat simple = new SimpleDateFormat("yyyy년 MM월 dd일 aa hh시 mm분 ss초");
+		String t = simple.format(time);
+		
 		try {
 			Desk desk = new Desk();
 			desk.setDName("피부과");
+			desk.setDate(t);
 			
-			Patient p99 = new Patient();
-			p99.setName("박모모");
-			p99.setGender("F");
-			p99.setAge("3Y");
-			p99.setBirth("19.08.12");
-			p99.setPhone("010-888-8888");
+			Patient p1 = new Patient();
+			p1.setName("박모모");
+			p1.setGender("F");
+			p1.setAge("3Y");
+			p1.setBirth("19.08.12");
+			p1.setPhone("010-888-8888");
+			p1.getDesks().add(desk);
 			
 			em.persist(desk);
-			em.persist(p99);
+			em.persist(p1);
 			
 			tx.commit();
 			
-			System.out.println(p99.getDID());
-			System.out.println(p99.getDID().getDName());
-			
-			String jpql = "select p from Patient p ";
-
-			List<Patient> all = em.createQuery(jpql).getResultList();
-
-			all.forEach(v -> System.out.println(v));
+//			System.out.println(p1.getDID());
+//			System.out.println(p1.getDID().getDName());
+			System.out.println(em.createNamedQuery("Patient.findAll"));
+//			List<Patient> all = em.createNamedQuery("Patient.findAll").getResultList();
+//			all.forEach(v -> System.out.println(v));
 			
 		} catch (Exception e) {
 			tx.rollback();

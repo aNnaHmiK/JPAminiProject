@@ -48,7 +48,8 @@ public class RecipeDAO {
          r5.setPay("690,000원");
          r5.setRx("깁스, 영양제, 칼슘");
 
-         desk.getRecipes().add(r1); // 이거 확인해야됨 !!
+//         patientRecipe.
+//         .getRecipes().add(r1); // 이거 확인해야됨 !!
 
          em.persist(r1);
          em.persist(r2);
@@ -161,7 +162,7 @@ public class RecipeDAO {
       try {
          Recipe r = em.find(Recipe.class, "C");
 
-         System.out.println("■ 환자 ID : " + r.getPatients());
+         System.out.println("■ 환자 ID : " + r.getDesks());
          System.out.println("■ 처방약 :  " + r.getRx());
          System.out.println("■ 치료비 : " + r.getPay());
 
