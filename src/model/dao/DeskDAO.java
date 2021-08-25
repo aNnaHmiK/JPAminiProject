@@ -35,7 +35,7 @@ public class DeskDAO {
 			p1.setAge("3Y");
 			p1.setBirth("19.08.12");
 			p1.setPhone("010-888-8888");
-			p1.getDesks().add(desk);
+//			p1.getDesks().add(desk);
 			
 			em.persist(desk);
 			em.persist(p1);

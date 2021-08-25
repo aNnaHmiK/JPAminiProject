@@ -1,50 +1,49 @@
 package model.domain;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
+//@SuppressWarnings("serial")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 //@ToString
 @Entity
-public class Desk {
+public class Desk{
 	
 	@Id
+	@Column(name = "desk_no")
+	private long n_no;
+	
+	
+//	@Id
 	@Column(name = "desk_name")
-	private String dName;
+//	@Column(name = "d_name")
+	private String DName;
 	
-	@ManyToOne
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
-    
-	@ManyToOne
-    @JoinColumn(name = "recipe_id")
-    private Recipe recipe;
-
+	@OneToMany(mappedBy = "desks2")
+	private List<Patient> patients = new ArrayList<>();
 	
-//	@ManyToOne
-//	@JoinColumn(name = "clinic_sign")
-//	private Clinic clinic;
-	
+	@OneToMany(mappedBy = "desks")
+	private List<Recipe> recipes = new ArrayList<>();
 	
 	private String date;
 
-
-	@Override
-	public String toString() {
-		return "Desk [dName=" + dName + ", date=" + date + "]";
-	}
-
-	
+//	@Override
+//	public String toString() {
+//		return "Desk [DName=" + DName + ", date=" + date + "]";
+//	}
+//
 }

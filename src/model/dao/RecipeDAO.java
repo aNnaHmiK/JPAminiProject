@@ -1,5 +1,6 @@
 package model.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,172 +9,214 @@ import javax.persistence.EntityTransaction;
 import org.junit.jupiter.api.Test;
 
 import model.domain.Desk;
+import model.domain.Patient;
 import model.domain.Recipe;
 import util.PublicCommon;
 
 public class RecipeDAO {
 
-   // 1. 처방 등록
+	// 1. 처방 등록
+	@Test
+	void rInit() {
+
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+
+		tx.begin();
+
+		long time = System.currentTimeMillis();
+		SimpleDateFormat simple = new SimpleDateFormat("yyyy년 MM월 dd일 aa hh시 mm분 ss초");
+		String t = simple.format(time);
+
+		try {
+			Desk desk = new Desk();
+			desk.setN_no(1l);
+			desk.setDName("내과");
+			desk.setDate(t);
+
+			Recipe r1 = new Recipe();
+			r1.setRID(1);
+			r1.setRNo("A");
+			r1.setPay("38,900원");
+			r1.setRx("감기약");
+
+			r1.setDesks(desk);
+
+			desk.getRecipes().add(r1);
+
+			em.persist(desk);
+			em.persist(r1);
+
+			tx.commit();
+
+			System.out.println("■ ■ ■ 처방 저장 성공 ■ ■ ■");
+
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
+
+//      EntityManager em = PublicCommon.getEntityManager();
+//      EntityTransaction tx = em.getTransaction();
+//      tx.begin();
+//
+//      try {
+//         Desk desk = new Desk();
+//
+//         Recipe r1 = new Recipe();
+//         r1.setRID("A");
+//         r1.setPay("38,900원");
+//         r1.setRx("감기약");
+//
+//         Recipe r2 = new Recipe();
+//         r2.setRID("B");
+//         r2.setPay("0원");
+//         r2.setRx("유산균");
+//
+//         Recipe r3 = new Recipe();
+//         r3.setRID("C");
+//         r3.setPay("75,000원");
+//         r3.setRx("항생제, 연고");
+//
+//         Recipe r4 = new Recipe();
+//         r4.setRID("D");
+//         r4.setPay("490,500원");
+//         r4.setRx("항생제, 연고, 주사");
+//
+//         Recipe r5 = new Recipe();
+//         r5.setRID("E");
+//         r5.setPay("690,000원");
+//         r5.setRx("깁스, 영양제, 칼슘");
+//
+////         patientRecipe.
+////         .getRecipes().add(r1); // 이거 확인해야됨 !!
+//
+//         em.persist(r1);
+//         em.persist(r2);
+//         em.persist(r3);
+//         em.persist(r4);
+//         em.persist(r5);
+//
+//         tx.commit();
+//
+//         System.out.println("■ ■ ■ 처방 완료 ■ ■ ■");
+//      } catch (Exception e) {
+//         tx.rollback();
+//         e.printStackTrace();
+//      } finally {
+//         em.close();
+//         em = null;
+//      }
+	}
+
+	// 2. 처방 수정
 //   @Test
-   void rInit() {
-      EntityManager em = PublicCommon.getEntityManager();
-      EntityTransaction tx = em.getTransaction();
-      tx.begin();
+	void rChange() {
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
 
-      try {
-         Desk desk = new Desk();
+		tx.begin();
 
-         Recipe r1 = new Recipe();
-         r1.setRID("A");
-         r1.setPay("38,900원");
-         r1.setRx("감기약");
+		try {
+			Recipe r = em.find(Recipe.class, "B");
+			r.setPay("21,000");
 
-         Recipe r2 = new Recipe();
-         r2.setRID("B");
-         r2.setPay("0원");
-         r2.setRx("유산균");
+			tx.commit();
 
-         Recipe r3 = new Recipe();
-         r3.setRID("C");
-         r3.setPay("75,000원");
-         r3.setRx("항생제, 연고");
+			System.out.println(em.find(Recipe.class, "B"));
 
-         Recipe r4 = new Recipe();
-         r4.setRID("D");
-         r4.setPay("490,500원");
-         r4.setRx("항생제, 연고, 주사");
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
 
-         Recipe r5 = new Recipe();
-         r5.setRID("E");
-         r5.setPay("690,000원");
-         r5.setRx("깁스, 영양제, 칼슘");
+	}
 
-//         patientRecipe.
-//         .getRecipes().add(r1); // 이거 확인해야됨 !!
-
-         em.persist(r1);
-         em.persist(r2);
-         em.persist(r3);
-         em.persist(r4);
-         em.persist(r5);
-
-         tx.commit();
-
-         System.out.println("■ ■ ■ 처방 완료 ■ ■ ■");
-      } catch (Exception e) {
-         tx.rollback();
-         e.printStackTrace();
-      } finally {
-         em.close();
-         em = null;
-      }
-   }
-
-   // 2. 처방 수정
+	// 3. 처방 삭제
 //   @Test
-   void rChange() {
-      EntityManager em = PublicCommon.getEntityManager();
-      EntityTransaction tx = em.getTransaction();
+	void rDelete() {
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
 
-      tx.begin();
+		tx.begin();
 
-      try {
-         Recipe r = em.find(Recipe.class, "B");
-         r.setPay("21,000");
+		try {
+			Recipe r = em.find(Recipe.class, "D");
+			em.remove(r);
 
-         tx.commit();
+			System.out.println("처방 삭제가 완료 되었습니다.");
 
-         System.out.println(em.find(Recipe.class, "B"));
+			tx.commit();
 
-      } catch (Exception e) {
-         tx.rollback();
-         e.printStackTrace();
-      } finally {
-         em.close();
-         em = null;
-      }
+			System.out.println(em.find(Recipe.class, "D"));
 
-   }
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
 
-   // 3. 처방 삭제
+	}
+
+	// 4. 전체 처방 조회
 //   @Test
-   void rDelete() {
-      EntityManager em = PublicCommon.getEntityManager();
-      EntityTransaction tx = em.getTransaction();
+	void rSelectAll() {
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
 
-      tx.begin();
+		tx.begin();
 
-      try {
-         Recipe r = em.find(Recipe.class, "D");
-         em.remove(r);
+		try {
 
-         System.out.println("처방 삭제가 완료 되었습니다.");
+			String jpql = "select r from Recipe r";
 
-         tx.commit();
-
-         System.out.println(em.find(Recipe.class, "D"));
-
-      } catch (Exception e) {
-         tx.rollback();
-         e.printStackTrace();
-      } finally {
-         em.close();
-         em = null;
-      }
-
-   }
-
-   // 4. 전체 처방 조회
-//   @Test
-   void rSelectAll() {
-      EntityManager em = PublicCommon.getEntityManager();
-      EntityTransaction tx = em.getTransaction();
-
-      tx.begin();
-
-      try {
-
-         String jpql = "select r from Recipe r";
-
-         List<Recipe> all = em.createQuery(jpql).getResultList();
+			List<Recipe> all = em.createQuery(jpql).getResultList();
 //         System.out.println(all);
 
-         all.forEach(v -> System.out.println(v));
+			all.forEach(v -> System.out.println(v));
 
-         tx.commit();
+			tx.commit();
 
-      } catch (Exception e) {
-         tx.rollback();
-         e.printStackTrace();
-      } finally {
-         em.close();
-         em = null;
-      }
-   }
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
+	}
 
-   // 5. 특정 처방 조회
-   @Test
-   void rSelect() {
-      EntityManager em = PublicCommon.getEntityManager();
-      EntityTransaction tx = em.getTransaction();
+	// 5. 특정 처방 조회
+//	@Test
+	void rSelect() {
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
 
-      tx.begin();
+		tx.begin();
 
-      try {
-         Recipe r = em.find(Recipe.class, "C");
+		try {
+			Recipe r = em.find(Recipe.class, "C");
 
-         System.out.println("■ 환자 ID : " + r.getDesks());
-         System.out.println("■ 처방약 :  " + r.getRx());
-         System.out.println("■ 치료비 : " + r.getPay());
+			System.out.println("■ 환자 ID : " + r.getDesks());
+			System.out.println("■ 처방약 :  " + r.getRx());
+			System.out.println("■ 치료비 : " + r.getPay());
 
-         tx.commit();
+			tx.commit();
 
-      } catch (Exception e) {
-         tx.rollback();
-         e.printStackTrace();
-      } finally {
-         em.close();
-         em = null;
-      }
-   }
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
+	}
 }

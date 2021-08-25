@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @NamedQuery(query = "select c from Clinic c", name = "Clinic.findAll")
 @NamedQuery(query = "select c from Clinic c where c.sign=:sign", name = "Clinic.findBysign")
-@Entity
+//@Entity
 public class Clinic {
 
 	@Column(name = "clinic_id")

@@ -1,12 +1,10 @@
 package model.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,21 +17,28 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Recipe {
-
+	
+	
 	@Id
 	@Column(name = "recipe_id")
-	private String rID;
+	private int rID;
 
-	@OneToMany(mappedBy = "recipe")
-    private List<Desk> desks = new ArrayList<>();
+//	@Id
+	@Column(name = "recipe_no")
+//	@Column(name = "recipe_id")
+	private String rNo;
+
+	@ManyToOne//(fetch=FetchType.LAZY)
+	@JoinColumn(name = "desk_no")
+	private Desk desks;
 	
 	private String pay;
 
 	private String rx;
-
-	@Override
-	public String toString() {
-		return "Recipe [rID=" + rID + ", desks=" + desks + ", pay=" + pay + ", rx=" + rx + "]";
-	}
+//
+//	@Override
+//	public String toString() {
+//		return "Recipe [rID=" + rID + ", desks=" + desks + ", pay=" + pay + ", rx=" + rx + "]";
+//	}
 
 }
