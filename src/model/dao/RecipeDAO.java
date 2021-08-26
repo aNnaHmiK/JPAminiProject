@@ -11,8 +11,7 @@ import util.PublicCommon;
 public class RecipeDAO {
 
 	// 1. 처방 생성
-//	@Test
-	void rInit() {
+	public static void rInit() {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 
@@ -52,8 +51,7 @@ public class RecipeDAO {
 	}
 
 	// 2. 전체 처방 조회
-//	@Test
-	void rSelectAll() {
+	public static void rSelectAll() {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 
@@ -72,15 +70,16 @@ public class RecipeDAO {
 	}
 
 	// 3. 특정 처방 조회
-//	@Test
-	void rSelectOne() {
+	public static void rSelectOne() {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 
 		tx.begin();
 
 		try {
-			Recipe r = (Recipe) em.createNamedQuery("recipe.findByname").setParameter("rName", "독감").getSingleResult();
+			Recipe r = (Recipe) em.createNamedQuery("recipe.findByname")
+								  .setParameter("rName", "독감")
+								  .getSingleResult();
 			System.out.println(r);
 
 		} catch (Exception e) {
@@ -93,15 +92,16 @@ public class RecipeDAO {
 	}
 
 	// 4. 처방 가격 수정
-//	@Test
-	void rChange() {
+	public static void rChange() {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 
 		tx.begin();
 
 		try {
-			Recipe r = (Recipe) em.createNamedQuery("recipe.findByname").setParameter("rName", "독감").getSingleResult();
+			Recipe r = (Recipe) em.createNamedQuery("recipe.findByname")
+								  .setParameter("rName", "독감")
+								  .getSingleResult();
 			r.setPay("6,800원");
 
 			tx.commit();
@@ -118,30 +118,12 @@ public class RecipeDAO {
 		}
 	}
 
-	// 5. 처방 삭제
-//	@Test
-//	void rDelete() {
-//		EntityManager em = PublicCommon.getEntityManager();
-//		EntityTransaction tx = em.getTransaction();
-//
-//		tx.begin();
-//
-//		try {
-//			Recipe r = (Recipe) em.createNamedQuery("recipe.findByname").setParameter("rName", "변비").getSingleResult();
-//			em.remove(r);
-//
-//			tx.commit();
-//
-//			System.out.println("■ ■ ■ 삭제 성공 ■ ■ ■");
-//			em.createNamedQuery("recipe.findAll").getResultList().forEach(v -> System.out.println(v));
-//
-//		} catch (Exception e) {
-//			tx.rollback();
-//			e.printStackTrace();
-//		} finally {
-//			em.close();
-//			em = null;
-//		}
-//	}
+	@Test
+	public void RecipeAll() {
+		RecipeDAO.rInit();
+		RecipeDAO.rSelectAll();
+		RecipeDAO.rSelectOne();
+		RecipeDAO.rChange();
+	}
 
 }
