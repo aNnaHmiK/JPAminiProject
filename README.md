@@ -55,10 +55,8 @@ MVC + DAO + Entity 활용하기
     - 25일의 반복, DAO와 Controller를 연결하는중 오류 발생
     - ManyToOne & OneToMany 에서 fech EAGER & LAZY 오류
     - RecipeDAO 에서 삭제 기능 불가
-
-    [해결] RecipeDAO 클래스 안에 rDelete 제외
-
-    [원인] Recipe 는 Patient & Disease 와 자식 부모 관계로 삭제 할 수 없는 관계
+        - [해결] RecipeDAO 클래스 안에 rDelete 제외
+        - [원인] Recipe 는 Patient & Disease 와 자식 부모 관계로 삭제 할 수 없는 관계
 
 - Github
     - push를 하는 과정에서 새로 수정이 진행된 파일만 업로드가 되고 전체 파일이 업로드가 안되는 경우가 발생, Gitbash를 통하여 전체 파일을 add 및 commit을 진행하였으나, 파일이 누락된채 업로드 진행
