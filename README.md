@@ -1,5 +1,10 @@
 JPA-Mini-Project (08/23~26)
 
+# 🏥 환자 관리 프로그램
+
+- 환자의 기본정보
+- 질병&처방 상세 내역 확인
+
 
 ## 🥼 팀 구성원
 
@@ -9,10 +14,6 @@ JPA-Mini-Project (08/23~26)
 
 💚 이태경 = [https://github.com/gaetaegoo](https://github.com/gaetaegoo)
 
-# 🏥 환자 관리 프로그램
-
-- 환자의 기본정보
-- 질병&처방 상세 내역 확인
 
 ## 🎯 학습 목표
 
